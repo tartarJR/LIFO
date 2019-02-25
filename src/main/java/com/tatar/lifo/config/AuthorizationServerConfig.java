@@ -19,6 +19,9 @@ import java.util.Collections;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
+    private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 6 * 60 * 60;
+
     @Value("${security.jwt.client-id}")
     private String clientId;
 
@@ -61,7 +64,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode(clientSecret))
                 .authorizedGrantTypes(grantType)
                 .scopes(scopeRead, scopeWrite)
-                .resourceIds(resourceIds);
+                .resourceIds(resourceIds)
+                .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS).
+                refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);
     }
 
     @Override
