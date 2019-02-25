@@ -2,6 +2,7 @@ package com.tatar.lifo.config;
 
 import com.tatar.lifo.constant.ApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -13,9 +14,10 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    private static final String RESOURCE_ID = "resource_id";
-
     private final ResourceServerTokenServices tokenServices;
+
+    @Value("${security.jwt.resource-ids}")
+    private String resourceIds;
 
     @Autowired
     public ResourceServerConfig(ResourceServerTokenServices tokenServices) {
@@ -24,7 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId(RESOURCE_ID).tokenServices(tokenServices);
+        resources.resourceId(resourceIds).tokenServices(tokenServices);
     }
 
     @Override
